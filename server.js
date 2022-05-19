@@ -1,22 +1,12 @@
-const mysql = require('mysql')
 const express = require('express')
+require('dotenv').config()
 const bodyParser = require('body-parser')
 
+const UsersRoute = require('./routes/users')
+const mysqlConnection = require('./db')
 var app = express()
 app.use(bodyParser.json())
-
-var mysqlConnection = mysql.createConnection({
-	host: 'localhost',
-	user: 'root',
-	password: '',
-	database: 'contact',
-	multipleStatements: true,
-})
-
-mysqlConnection.connect((err) => {
-	if (!err) {
-		console.log('Connected')
-	} else {
-		console.log('Connection failed')
-	}
+app.use('/users', UsersRoute)
+app.listen(process.env.APP_PORT, () => {
+	console.log('listening on port ' + process.env.APP_PORT)
 })
